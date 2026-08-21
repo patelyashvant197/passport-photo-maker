@@ -1,546 +1,676 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Passport Photo Maker - Computer Center</title>
+<title>Passport Photo Maker | 35x45mm</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    body {
-      font-family: Arial, sans-serif;
-      background: #f3f5f9;
-      color: #222;
-    }
+body{
+  font-family:Arial,sans-serif;
+  background:#f2f5f9;
+  color:#222;
+}
 
-    header {
-      background: #1769aa;
-      color: white;
-      padding: 18px;
-      text-align: center;
-    }
+header{
+  background:#1769aa;
+  color:white;
+  text-align:center;
+  padding:20px;
+}
 
-    header h1 {
-      font-size: 25px;
-      margin-bottom: 5px;
-    }
+header h1{
+  font-size:26px;
+  margin-bottom:6px;
+}
 
-    header p {
-      font-size: 14px;
-    }
+.container{
+  max-width:1100px;
+  margin:25px auto;
+  padding:15px;
+}
 
-    .container {
-      max-width: 1100px;
-      margin: 25px auto;
-      padding: 15px;
-    }
+.card{
+  background:white;
+  padding:22px;
+  border-radius:12px;
+  box-shadow:0 3px 15px rgba(0,0,0,.08);
+  margin-bottom:20px;
+}
 
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 22px;
-      margin-bottom: 20px;
-      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-    }
+.upload{
+  border:2px dashed #1769aa;
+  padding:30px;
+  text-align:center;
+  border-radius:10px;
+  background:#f8fbff;
+}
 
-    .upload-box {
-      border: 2px dashed #1769aa;
-      border-radius: 10px;
-      padding: 35px 15px;
-      text-align: center;
-      cursor: pointer;
-      background: #f8fbff;
-    }
+.upload input{
+  margin-top:15px;
+}
 
-    .upload-box:hover {
-      background: #eef7ff;
-    }
+.controls{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+  margin-top:20px;
+}
 
-    .upload-box input {
-      margin-top: 15px;
-    }
+.control{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
 
-    .controls {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
-    }
+label{
+  font-weight:bold;
+}
 
-    .control {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
+select{
+  padding:11px;
+  border:1px solid #ccc;
+  border-radius:7px;
+  font-size:15px;
+  background:white;
+}
 
-    label {
-      font-weight: bold;
-      font-size: 14px;
-    }
+button{
+  border:0;
+  padding:13px 20px;
+  border-radius:7px;
+  cursor:pointer;
+  font-size:15px;
+  font-weight:bold;
+  margin-top:18px;
+  margin-right:8px;
+}
 
-    select,
-    input[type="number"] {
-      padding: 11px;
-      border: 1px solid #ccc;
-      border-radius: 7px;
-      font-size: 15px;
-      background: white;
-    }
+.create{
+  background:#1769aa;
+  color:white;
+}
 
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 20px;
-    }
+.download{
+  background:#198754;
+  color:white;
+}
 
-    button {
-      border: none;
-      padding: 12px 20px;
-      border-radius: 7px;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: bold;
-    }
+.reset{
+  background:#dc3545;
+  color:white;
+}
 
-    .primary {
-      background: #1769aa;
-      color: white;
-    }
+.workspace{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
 
-    .success {
-      background: #198754;
-      color: white;
-    }
+.preview{
+  min-height:350px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#eee;
+  border-radius:8px;
+  overflow:hidden;
+}
 
-    .danger {
-      background: #dc3545;
-      color: white;
-    }
+.preview img{
+  max-width:100%;
+  max-height:400px;
+}
 
-    button:hover {
-      opacity: 0.9;
-    }
+.sheet-area{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:auto;
+}
 
-    .workspace {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
+canvas{
+  max-width:100%;
+  height:auto;
+  border:1px solid #aaa;
+  background:white;
+}
 
-    .preview-title {
-      font-size: 18px;
-      margin-bottom: 15px;
-      font-weight: bold;
-    }
+.info{
+  margin-top:15px;
+  padding:12px;
+  background:#eef7ff;
+  border-radius:7px;
+  font-size:14px;
+}
 
-    .photo-preview {
-      min-height: 300px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #eee;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .photo-preview img {
-      max-width: 100%;
-      max-height: 400px;
-      object-fit: contain;
-    }
-
-    .sheet {
-      width: 100%;
-      aspect-ratio: 3 / 2;
-      background: white;
-      border: 1px solid #ccc;
-      padding: 10px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 1fr;
-      gap: 8px;
-      overflow: hidden;
-    }
-
-    .sheet-photo {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border: 1px solid #222;
-    }
-
-    .empty {
-      color: #777;
-      text-align: center;
-      padding: 40px 10px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #666;
-      font-size: 13px;
-    }
-
-    @media (max-width: 750px) {
-      .workspace {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+@media(max-width:750px){
+  .workspace{
+    grid-template-columns:1fr;
+  }
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <h1>📷 Passport Photo Maker</h1>
-  <p>Computer Center के लिए आसान Passport Photo Tool</p>
+<h1>📷 Passport Photo Maker</h1>
+<p>35 × 45 mm | Computer Center Tool</p>
 </header>
 
 <div class="container">
 
-  <div class="card">
+<div class="card">
 
-    <div class="upload-box">
+<div class="upload">
 
-      <h2>📤 Photo Upload करें</h2>
+<h2>📤 Photo Upload करें</h2>
 
-      <p style="margin-top:8px;">
-        JPG या PNG फोटो चुनें
-      </p>
+<p style="margin-top:8px">
+JPG या PNG फोटो चुनें
+</p>
 
-      <input
-        type="file"
-        id="photoInput"
-        accept="image/jpeg,image/png"
-      >
-
-    </div>
-
-    <div class="controls">
-
-      <div class="control">
-        <label>Photo Size</label>
-
-        <select id="photoSize">
-
-          <option value="passport">
-            Passport Size
-          </option>
-
-          <option value="small">
-            Small Photo
-          </option>
-
-          <option value="custom">
-            Custom
-          </option>
-
-        </select>
-      </div>
-
-      <div class="control">
-
-        <label>Background</label>
-
-        <select id="background">
-
-          <option value="white">
-            White
-          </option>
-
-          <option value="blue">
-            Blue
-          </option>
-
-          <option value="none">
-            Original
-          </option>
-
-        </select>
-
-      </div>
-
-      <div class="control">
-
-        <label>Copies</label>
-
-        <select id="copies">
-
-          <option value="3">3 Copies</option>
-          <option value="4">4 Copies</option>
-          <option value="6" selected>6 Copies</option>
-          <option value="8">8 Copies</option>
-          <option value="9">9 Copies</option>
-          <option value="12">12 Copies</option>
-
-        </select>
-
-      </div>
-
-      <div class="control">
-
-        <label>Paper Size</label>
-
-        <select id="paper">
-
-          <option value="4x6">
-            4 × 6 Inch
-          </option>
-
-          <option value="a4">
-            A4
-          </option>
-
-        </select>
-
-      </div>
-
-      <div class="control">
-
-        <label>Border</label>
-
-        <select id="border">
-
-          <option value="yes">
-            Border ON
-          </option>
-
-          <option value="no">
-            Border OFF
-          </option>
-
-        </select>
-
-      </div>
-
-    </div>
-
-    <div class="buttons">
-
-      <button
-        class="primary"
-        onclick="createSheet()">
-        ✨ Create Passport Sheet
-      </button>
-
-      <button
-        class="success"
-        onclick="downloadSheet()">
-        ⬇️ Download JPG
-      </button>
-
-      <button
-        class="danger"
-        onclick="resetTool()">
-        🔄 Reset
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <div class="workspace">
-
-    <div class="card">
-
-      <div class="preview-title">
-        👤 Original Photo
-      </div>
-
-      <div class="photo-preview">
-
-        <img
-          id="previewImage"
-          style="display:none;"
-          alt="Photo Preview">
-
-        <div
-          id="emptyPreview"
-          class="empty">
-
-          Photo upload करने के बाद यहाँ दिखाई देगी
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="card">
-
-      <div class="preview-title">
-        🖨️ Passport Sheet Preview
-      </div>
-
-      <div
-        id="sheet"
-        class="sheet">
-
-        <div class="empty">
-          अभी कोई sheet नहीं बनी है
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
+<input
+type="file"
+id="photoInput"
+accept="image/jpeg,image/png"
+>
 
 </div>
 
-<footer>
+<div class="controls">
 
-  Passport Photo Maker © 2026
+<div class="control">
+<label>Passport Size</label>
 
-</footer>
+<select id="photoSize">
+<option value="35x45">35 × 45 mm</option>
+</select>
+</div>
 
+<div class="control">
+
+<label>Background</label>
+
+<select id="background">
+
+<option value="original">Original</option>
+<option value="white">White</option>
+<option value="blue">Blue</option>
+
+</select>
+
+</div>
+
+<div class="control">
+
+<label>Copies</label>
+
+<select id="copies">
+
+<option value="3">3 Copies</option>
+<option value="4">4 Copies</option>
+<option value="6" selected>6 Copies</option>
+<option value="8">8 Copies</option>
+<option value="12">12 Copies</option>
+
+</select>
+
+</div>
+
+<div class="control">
+
+<label>Paper</label>
+
+<select id="paper">
+
+<option value="4x6">4 × 6 Inch</option>
+
+</select>
+
+</div>
+
+<div class="control">
+
+<label>Border</label>
+
+<select id="border">
+
+<option value="yes">Border ON</option>
+<option value="no">Border OFF</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div>
+
+<button
+class="create"
+onclick="createSheet()">
+✨ Create Sheet
+</button>
+
+<button
+class="download"
+onclick="downloadJPG()">
+⬇️ Download JPG
+</button>
+
+<button
+class="reset"
+onclick="resetTool()">
+🔄 Reset
+</button>
+
+</div>
+
+<div class="info">
+
+<b>Photo Size:</b> 35 × 45 mm<br>
+<b>Paper:</b> 4 × 6 inch<br>
+<b>Output:</b> High Quality JPG
+
+</div>
+
+</div>
+
+
+<div class="workspace">
+
+<div class="card">
+
+<h3 style="margin-bottom:15px">
+👤 Original Photo
+</h3>
+
+<div class="preview">
+
+<img
+id="previewImage"
+style="display:none"
+>
+
+<span id="empty">
+Photo upload करने के बाद यहाँ दिखाई देगी
+</span>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3 style="margin-bottom:15px">
+🖨️ 4 × 6 Sheet Preview
+</h3>
+
+<div class="sheet-area">
+
+<canvas
+id="sheetCanvas"
+width="1200"
+height="1800">
+</canvas>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 <script>
 
-let uploadedImage = null;
+let image = null;
 
 
-/* Photo Upload */
+/* =========================
+   PHOTO UPLOAD
+========================= */
 
 document
-  .getElementById("photoInput")
-  .addEventListener("change", function(event) {
+.getElementById("photoInput")
+.addEventListener("change",function(e){
 
-    const file = event.target.files[0];
+const file=e.target.files[0];
 
-    if (!file) return;
+if(!file)return;
 
-    const reader = new FileReader();
+const reader=new FileReader();
 
-    reader.onload = function(e) {
+reader.onload=function(event){
 
-      uploadedImage = e.target.result;
+image=new Image();
 
-      const img =
-        document.getElementById("previewImage");
+image.onload=function(){
 
-      img.src = uploadedImage;
+const preview=
+document.getElementById("previewImage");
 
-      img.style.display = "block";
+preview.src=event.target.result;
 
-      document
-        .getElementById("emptyPreview")
-        .style.display = "none";
+preview.style.display="block";
 
-    };
+document.getElementById("empty")
+.style.display="none";
 
-    reader.readAsDataURL(file);
+};
 
-  });
+image.src=event.target.result;
+
+};
+
+reader.readAsDataURL(file);
+
+});
 
 
-/* Create Sheet */
+/* =========================
+   CREATE SHEET
+========================= */
 
-function createSheet() {
+function createSheet(){
 
-  if (!uploadedImage) {
+if(!image){
 
-    alert("पहले फोटो upload करें।");
+alert("पहले फोटो upload करें।");
 
-    return;
+return;
 
-  }
+}
 
-  const copies =
-    parseInt(
-      document.getElementById("copies").value
-    );
+const canvas=
+document.getElementById("sheetCanvas");
 
-  const border =
-    document.getElementById("border").value;
+const ctx=
+canvas.getContext("2d");
 
-  const background =
-    document.getElementById("background").value;
+const copies=
+parseInt(
+document.getElementById("copies").value
+);
 
-  const sheet =
-    document.getElementById("sheet");
+const background=
+document.getElementById("background").value;
 
-  sheet.innerHTML = "";
+const border=
+document.getElementById("border").value;
 
-  for (let i = 0; i < copies; i++) {
 
-    const img =
-      document.createElement("img");
+/*
+4×6 inch at 300 DPI
+= 1200 × 1800 pixels
+*/
 
-    img.src = uploadedImage;
+canvas.width=1200;
+canvas.height=1800;
 
-    img.className = "sheet-photo";
 
-    if (border === "no") {
+/* Paper background */
 
-      img.style.border = "none";
+ctx.fillStyle="white";
 
-    }
+ctx.fillRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
 
-    if (background === "blue") {
 
-      img.style.background = "#dceeff";
+/*
+35×45mm at 300 DPI
 
-    }
+35mm = 413px approx
+45mm = 531px approx
+*/
 
-    sheet.appendChild(img);
+const photoW=413;
+const photoH=531;
 
-  }
+
+/* Gap */
+
+const gap=25;
+
+
+/*
+Maximum columns
+*/
+
+let columns=2;
+
+if(copies>=6){
+columns=3;
+}
+
+if(copies>=12){
+columns=4;
+}
+
+
+/*
+Rows
+*/
+
+const rows=
+Math.ceil(copies/columns);
+
+
+/*
+Total layout size
+*/
+
+const totalW=
+columns*photoW+
+(columns-1)*gap;
+
+const totalH=
+rows*photoH+
+(rows-1)*gap;
+
+
+/*
+Center sheet
+*/
+
+const startX=
+(canvas.width-totalW)/2;
+
+const startY=
+(canvas.height-totalH)/2;
+
+
+/*
+Draw photos
+*/
+
+for(let i=0;i<copies;i++){
+
+const col=i%columns;
+
+const row=Math.floor(i/columns);
+
+const x=
+startX+
+col*(photoW+gap);
+
+const y=
+startY+
+row*(photoH+gap);
+
+
+/*
+Photo clipping
+*/
+
+ctx.save();
+
+ctx.beginPath();
+
+ctx.rect(
+x,
+y,
+photoW,
+photoH
+);
+
+ctx.clip();
+
+
+/*
+Background
+*/
+
+if(background==="white"){
+
+ctx.fillStyle="white";
+
+ctx.fillRect(
+x,
+y,
+photoW,
+photoH
+);
+
+}
+
+else if(background==="blue"){
+
+ctx.fillStyle="#d9ecff";
+
+ctx.fillRect(
+x,
+y,
+photoW,
+photoH
+);
 
 }
 
 
-/* Download Sheet */
+/*
+Photo
+*/
 
-function downloadSheet() {
+ctx.drawImage(
+image,
+x,
+y,
+photoW,
+photoH
+);
 
-  if (!uploadedImage) {
+ctx.restore();
 
-    alert("पहले फोटो upload करें और sheet बनाएँ।");
 
-    return;
+/*
+Border
+*/
 
-  }
+if(border==="yes"){
 
-  alert(
-    "Download feature का advanced version अगले step में Canvas के साथ जोड़ेंगे।"
-  );
+ctx.strokeStyle="#222";
+
+ctx.lineWidth=3;
+
+ctx.strokeRect(
+x,
+y,
+photoW,
+photoH
+);
+
+}
+
+}
 
 }
 
 
-/* Reset */
+/* =========================
+   DOWNLOAD JPG
+========================= */
 
-function resetTool() {
+function downloadJPG(){
 
-  uploadedImage = null;
+if(!image){
 
-  document
-    .getElementById("photoInput")
-    .value = "";
+alert("पहले photo upload करें।");
 
-  document
-    .getElementById("previewImage")
-    .style.display = "none";
+return;
 
-  document
-    .getElementById("emptyPreview")
-    .style.display = "block";
+}
 
-  document
-    .getElementById("sheet")
-    .innerHTML =
-      '<div class="empty">अभी कोई sheet नहीं बनी है</div>';
+createSheet();
+
+const canvas=
+document.getElementById("sheetCanvas");
+
+const link=
+document.createElement("a");
+
+link.download=
+"passport-photo-4x6.jpg";
+
+link.href=
+canvas.toDataURL(
+"image/jpeg",
+0.95
+);
+
+link.click();
+
+}
+
+
+/* =========================
+   RESET
+========================= */
+
+function resetTool(){
+
+image=null;
+
+document
+.getElementById("photoInput")
+.value="";
+
+document
+.getElementById("previewImage")
+.style.display="none";
+
+document
+.getElementById("empty")
+.style.display="block";
+
+const canvas=
+document.getElementById("sheetCanvas");
+
+const ctx=
+canvas.getContext("2d");
+
+ctx.fillStyle="white";
+
+ctx.fillRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
 
 }
 
