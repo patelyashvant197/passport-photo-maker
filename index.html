@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="hi">
+
 <head>
 
 <meta charset="UTF-8">
@@ -7,9 +8,13 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>Passport Photo Maker V5</title>
+<title>Passport Photo Maker V6</title>
 
 <style>
+
+/* ===============================
+BASIC
+=============================== */
 
 *{
     box-sizing:border-box;
@@ -17,21 +22,20 @@ content="width=device-width, initial-scale=1.0">
 
 body{
     margin:0;
-    font-family:Arial,Helvetica,sans-serif;
+    font-family:Arial, sans-serif;
     background:#eef2f6;
     color:#222;
 }
 
 header{
     background:#1769aa;
-    color:#fff;
+    color:white;
     text-align:center;
     padding:20px;
 }
 
 header h1{
-    margin:0 0 7px;
-    font-size:27px;
+    margin:0 0 6px;
 }
 
 header p{
@@ -41,29 +45,39 @@ header p{
 
 .container{
     max-width:1200px;
-    margin:25px auto;
-    padding:15px;
+    margin:auto;
+    padding:18px;
 }
 
 .card{
-    background:#fff;
-    padding:22px;
-    border-radius:12px;
+    background:white;
+    padding:20px;
     margin-bottom:20px;
-    box-shadow:0 3px 15px rgba(0,0,0,.08);
+    border-radius:12px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
+
+
+/* ===============================
+UPLOAD
+=============================== */
 
 .upload{
     border:2px dashed #1769aa;
-    background:#f8fbff;
-    border-radius:10px;
+    background:#f7fbff;
     padding:30px;
     text-align:center;
+    border-radius:10px;
 }
 
 .upload input{
     margin-top:15px;
 }
+
+
+/* ===============================
+CONTROLS
+=============================== */
 
 .controls{
     display:grid;
@@ -88,7 +102,7 @@ select{
     padding:11px;
     border:1px solid #ccc;
     border-radius:7px;
-    background:#fff;
+    background:white;
     font-size:15px;
 }
 
@@ -96,19 +110,20 @@ input[type="range"]{
     width:100%;
 }
 
-.zoom-value{
+.zoomText{
     font-size:13px;
     color:#555;
 }
 
-.buttons{
-    margin-top:5px;
-}
+
+/* ===============================
+BUTTONS
+=============================== */
 
 button{
+    padding:13px 20px;
     border:0;
     border-radius:7px;
-    padding:13px 20px;
     margin-top:20px;
     margin-right:8px;
     cursor:pointer;
@@ -118,18 +133,23 @@ button{
 
 .create{
     background:#1769aa;
-    color:#fff;
+    color:white;
 }
 
 .download{
     background:#198754;
-    color:#fff;
+    color:white;
 }
 
 .reset{
     background:#dc3545;
-    color:#fff;
+    color:white;
 }
+
+
+/* ===============================
+WORKSPACE
+=============================== */
 
 .workspace{
     display:grid;
@@ -137,73 +157,85 @@ button{
     gap:20px;
 }
 
-.preview-title{
-    margin-bottom:15px;
-    font-size:18px;
-    font-weight:bold;
-}
 
+/* ===============================
+CROP EDITOR
+=============================== */
 
-/* ===================================
-CROP AREA
-=================================== */
+.cropBox{
 
-.crop-wrapper{
     width:100%;
-    background:#222;
-    border-radius:8px;
-    padding:20px;
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
-    overflow:hidden;
+
+    background:#222;
+
+    padding:20px;
+
+    border-radius:10px;
+
 }
 
-.crop-area{
-    position:relative;
 
-    /*
-    35:45 ratio
-    */
+/*
+35 : 45 ratio
+*/
+
+.cropWindow{
 
     width:280px;
+
     height:360px;
+
+    position:relative;
+
+    overflow:hidden;
 
     background:#111;
 
-    overflow:hidden;
-
-    border:3px solid #fff;
+    border:3px solid white;
 
     cursor:grab;
 
     touch-action:none;
 
-    user-select:none;
 }
 
-.crop-area:active{
-    cursor:grabbing;
-}
 
-#cropImage{
+/*
+Actual photo
+*/
+
+#cropPhoto{
 
     position:absolute;
 
-    max-width:none;
+    display:none;
 
-    max-height:none;
+    max-width:none !important;
 
-    user-select:none;
+    max-height:none !important;
+
+    width:auto;
+
+    height:auto;
 
     pointer-events:none;
+
+    user-select:none;
 
 }
 
 
-/* crop border */
+/*
+Green crop border
+*/
 
-.crop-border{
+.cropFrame{
 
     position:absolute;
 
@@ -213,65 +245,67 @@ CROP AREA
 
     pointer-events:none;
 
+    z-index:10;
+
 }
 
 
-/* center guide */
+/*
+Guidelines
+*/
 
-.crop-guide{
+.verticalLine{
 
     position:absolute;
-
-    left:50%;
-
-    top:50%;
 
     width:1px;
 
     height:100%;
 
-    background:rgba(255,255,255,.35);
+    left:50%;
 
-    transform:translateX(-50%);
+    top:0;
+
+    background:rgba(255,255,255,.3);
+
+    z-index:11;
 
     pointer-events:none;
 
 }
 
-.crop-guide-horizontal{
+.horizontalLine{
 
     position:absolute;
-
-    left:0;
-
-    top:50%;
 
     width:100%;
 
     height:1px;
 
-    background:rgba(255,255,255,.35);
+    top:50%;
 
-    transform:translateY(-50%);
+    left:0;
+
+    background:rgba(255,255,255,.3);
+
+    z-index:11;
 
     pointer-events:none;
 
 }
 
 
-/* ===================================
+/* ===============================
 SHEET
-=================================== */
+=============================== */
 
-.sheet-box{
-
-    width:100%;
-
-    overflow:auto;
+.sheetContainer{
 
     background:#ddd;
 
     padding:10px;
+
+    overflow:auto;
 
     text-align:center;
 
@@ -279,22 +313,22 @@ SHEET
 
 canvas{
 
+    background:white;
+
     width:100%;
 
     max-width:650px;
 
     height:auto;
 
-    background:#fff;
-
     border:1px solid #999;
 
 }
 
 
-/* ===================================
+/* ===============================
 STATUS
-=================================== */
+=============================== */
 
 .status{
 
@@ -321,9 +355,9 @@ STATUS
 }
 
 
-/* ===================================
+/* ===============================
 MOBILE
-=================================== */
+=============================== */
 
 @media(max-width:750px){
 
@@ -333,7 +367,7 @@ MOBILE
 
     }
 
-    .crop-area{
+    .cropWindow{
 
         width:240px;
 
@@ -356,7 +390,7 @@ MOBILE
 <h1>📷 Passport Photo Maker</h1>
 
 <p>
-35 × 45 mm | Drag Crop | 4×6 & A4
+35 × 45 mm | Drag + Zoom | 4×6 + A4
 </p>
 
 </header>
@@ -365,9 +399,9 @@ MOBILE
 <div class="container">
 
 
-<!-- ==================================
-UPLOAD + CONTROLS
-================================== -->
+<!-- =================================
+UPLOAD CARD
+================================= -->
 
 <div class="card">
 
@@ -387,6 +421,10 @@ accept="image/jpeg,image/png">
 
 </div>
 
+
+<!-- =================================
+CONTROLS
+================================= -->
 
 <div class="controls">
 
@@ -495,7 +533,6 @@ Border OFF
 
 <label>
 🔍 Zoom
-
 </label>
 
 <input
@@ -506,7 +543,7 @@ max="220"
 value="100"
 step="1">
 
-<div class="zoom-value">
+<div class="zoomText">
 
 Zoom:
 <span id="zoomValue">
@@ -521,12 +558,13 @@ Zoom:
 </div>
 
 
-<div class="buttons">
-
+<!-- =================================
+BUTTONS
+================================= -->
 
 <button
 class="create"
-onclick="createSheet()">
+id="createBtn">
 
 ✨ Create Sheet
 
@@ -535,7 +573,7 @@ onclick="createSheet()">
 
 <button
 class="download"
-onclick="downloadJPG()">
+id="downloadBtn">
 
 ⬇️ Download JPG
 
@@ -544,14 +582,11 @@ onclick="downloadJPG()">
 
 <button
 class="reset"
-onclick="resetTool()">
+id="resetBtn">
 
 🔄 Reset
 
 </button>
-
-
-</div>
 
 
 <div
@@ -563,66 +598,45 @@ id="status">
 </div>
 
 
-<div class="info">
-
-Photo Size:
-<b>35 × 45 mm</b>
-
-<br>
-
-Paper:
-<b>4 × 6 Inch / A4</b>
-
-<br>
-
-Photos sheet के ऊपर-left से arrange होंगी।
-
 </div>
 
 
-</div>
-
-
-<!-- ==================================
+<!-- =================================
 WORKSPACE
-================================== -->
+================================= -->
 
 <div class="workspace">
 
 
-<!-- ==================================
-CROP EDITOR
-================================== -->
+<!-- =================================
+CROP
+================================= -->
 
 <div class="card">
 
-
-<div class="preview-title">
-
+<h3>
 ✂️ Photo Crop & Position
+</h3>
 
-</div>
 
-
-<div class="crop-wrapper">
+<div class="cropBox">
 
 
 <div
-class="crop-area"
-id="cropArea">
+class="cropWindow"
+id="cropWindow">
 
 
 <img
-id="cropImage"
-style="display:none;"
->
+id="cropPhoto"
+alt="Crop Photo">
 
 
-<div class="crop-border"></div>
+<div class="cropFrame"></div>
 
-<div class="crop-guide"></div>
+<div class="verticalLine"></div>
 
-<div class="crop-guide-horizontal"></div>
+<div class="horizontalLine"></div>
 
 
 </div>
@@ -636,11 +650,11 @@ style="display:none;"
 
 <br>
 
-📱 Mobile में finger से photo drag करें।
+📱 Mobile में finger से drag करें।
 
 <br>
 
-🔍 Zoom slider से photo को बड़ा/छोटा करें।
+🔍 Zoom slider से photo को बड़ा या छोटा करें।
 
 </div>
 
@@ -648,22 +662,18 @@ style="display:none;"
 </div>
 
 
-<!-- ==================================
+<!-- =================================
 SHEET PREVIEW
-================================== -->
+================================= -->
 
 <div class="card">
 
-
-<div class="preview-title">
-
+<h3>
 🖨️ Print Sheet Preview
+</h3>
 
-</div>
 
-
-<div class="sheet-box">
-
+<div class="sheetContainer">
 
 <canvas
 id="sheetCanvas"
@@ -671,6 +681,18 @@ width="1200"
 height="1800">
 </canvas>
 
+</div>
+
+
+<div class="info">
+
+Photo Size:
+<b>35 × 45 mm</b>
+
+<br>
+
+Photos:
+<b>Top-Left Alignment</b>
 
 </div>
 
@@ -686,47 +708,46 @@ height="1800">
 
 <script>
 
-
-/* =====================================
+/* ==================================================
 GLOBAL VARIABLES
-===================================== */
+================================================== */
 
-let sourceImage = null;
-
-let imageX = 0;
-
-let imageY = 0;
+let img = null;
 
 let zoom = 1;
 
+let posX = 0;
+
+let posY = 0;
+
 let dragging = false;
 
-let startMouseX = 0;
+let startX = 0;
 
-let startMouseY = 0;
+let startY = 0;
 
-let startImageX = 0;
+let oldX = 0;
 
-let startImageY = 0;
+let oldY = 0;
 
 
-/* =====================================
+/* ==================================================
 ELEMENTS
-===================================== */
+================================================== */
 
-const photoInput =
+const input =
 document.getElementById(
 "photoInput"
 );
 
-const cropArea =
+const cropWindow =
 document.getElementById(
-"cropArea"
+"cropWindow"
 );
 
-const cropImage =
+const cropPhoto =
 document.getElementById(
-"cropImage"
+"cropPhoto"
 );
 
 const zoomSlider =
@@ -740,11 +761,11 @@ document.getElementById(
 );
 
 
-/* =====================================
+/* ==================================================
 UPLOAD
-===================================== */
+================================================== */
 
-photoInput.addEventListener(
+input.addEventListener(
 "change",
 function(e){
 
@@ -758,17 +779,6 @@ return;
 }
 
 
-if(!file.type.startsWith("image/")){
-
-alert(
-"कृपया JPG या PNG photo चुनें।"
-);
-
-return;
-
-}
-
-
 const reader =
 new FileReader();
 
@@ -776,25 +786,25 @@ new FileReader();
 reader.onload =
 function(event){
 
-const img =
+const image =
 new Image();
 
 
-img.onload =
+image.onload =
 function(){
 
-sourceImage = img;
+img = image;
 
 
 /*
-Reset position
+Reset
 */
 
-imageX = 0;
-
-imageY = 0;
-
 zoom = 1;
+
+posX = 0;
+
+posY = 0;
 
 zoomSlider.value = 100;
 
@@ -802,25 +812,25 @@ zoomValue.innerText = "100%";
 
 
 /*
-Show crop image
+Show image
 */
 
-cropImage.src =
+cropPhoto.src =
 event.target.result;
 
-cropImage.style.display =
+cropPhoto.style.display =
 "block";
 
 
 /*
-Initial positioning
+Position image
 */
 
-setInitialImagePosition();
+setImagePosition();
 
 
 /*
-Create preview
+Create sheet
 */
 
 createSheet();
@@ -831,12 +841,12 @@ document
 "status"
 )
 .innerText =
-"Photo upload हो गई है। Photo को crop box में drag कर सकते हैं।";
+"Photo upload हो गई है। अब photo को drag या zoom करें।";
 
 };
 
 
-img.src =
+image.src =
 event.target.result;
 
 };
@@ -847,57 +857,56 @@ reader.readAsDataURL(file);
 });
 
 
-/* =====================================
-INITIAL IMAGE POSITION
-===================================== */
+/* ==================================================
+SET INITIAL POSITION
+================================================== */
 
-function setInitialImagePosition(){
+function setImagePosition(){
 
-if(!sourceImage){
+if(!img){
 
 return;
 
 }
 
 
-/*
-Crop box
-*/
+const boxW =
+cropWindow.clientWidth;
 
-const boxWidth =
-cropArea.clientWidth;
-
-const boxHeight =
-cropArea.clientHeight;
+const boxH =
+cropWindow.clientHeight;
 
 
 /*
-Image ratio
+Image dimensions
 */
 
 const iw =
-sourceImage.naturalWidth;
+img.naturalWidth;
 
 const ih =
-sourceImage.naturalHeight;
+img.naturalHeight;
 
 
 /*
-Cover crop area
+Cover scale
 */
 
 const scale =
 Math.max(
-boxWidth / iw,
-boxHeight / ih
+boxW / iw,
+boxH / ih
 );
 
 
-const scaledWidth =
+/*
+Displayed dimensions
+*/
+
+const w =
 iw * scale;
 
-
-const scaledHeight =
+const h =
 ih * scale;
 
 
@@ -905,250 +914,350 @@ ih * scale;
 Center
 */
 
-imageX =
-(boxWidth - scaledWidth) / 2;
+posX =
+(boxW - w) / 2;
 
-imageY =
-(boxHeight - scaledHeight) / 2;
+posY =
+(boxH - h) / 2;
 
 
 /*
 Apply
 */
 
-updateCropImage();
+updateImage();
 
 }
 
 
-/* =====================================
+/* ==================================================
 UPDATE IMAGE
-===================================== */
+================================================== */
 
-function updateCropImage(){
+function updateImage(){
 
-if(!sourceImage){
+if(!img){
 
 return;
 
 }
 
 
-const boxWidth =
-cropArea.clientWidth;
+const boxW =
+cropWindow.clientWidth;
 
-const boxHeight =
-cropArea.clientHeight;
+const boxH =
+cropWindow.clientHeight;
 
 
 const iw =
-sourceImage.naturalWidth;
+img.naturalWidth;
 
 const ih =
-sourceImage.naturalHeight;
+img.naturalHeight;
 
 
 /*
-Cover
+Base scale
 */
 
 const baseScale =
 Math.max(
-boxWidth / iw,
-boxHeight / ih
+boxW / iw,
+boxH / ih
 );
 
+
+/*
+Zoom scale
+*/
 
 const scale =
 baseScale * zoom;
 
 
-const width =
+/*
+Final size
+*/
+
+const w =
 iw * scale;
 
-const height =
+const h =
 ih * scale;
+
+
+/*
+Apply CSS
+*/
+
+cropPhoto.style.width =
+w + "px";
+
+cropPhoto.style.height =
+h + "px";
+
+cropPhoto.style.left =
+posX + "px";
+
+cropPhoto.style.top =
+posY + "px";
+
+
+/*
+Keep inside
+*/
+
+keepInside();
+
+}
+
+
+/* ==================================================
+KEEP IMAGE INSIDE
+================================================== */
+
+function keepInside(){
+
+if(!img){
+
+return;
+
+}
+
+
+const boxW =
+cropWindow.clientWidth;
+
+const boxH =
+cropWindow.clientHeight;
+
+
+const w =
+parseFloat(
+cropPhoto.style.width
+);
+
+const h =
+parseFloat(
+cropPhoto.style.height
+);
+
+
+/*
+Left
+*/
+
+if(posX > 0){
+
+posX = 0;
+
+}
+
+
+/*
+Right
+*/
+
+if(posX + w < boxW){
+
+posX =
+boxW - w;
+
+}
+
+
+/*
+Top
+*/
+
+if(posY > 0){
+
+posY = 0;
+
+}
+
+
+/*
+Bottom
+*/
+
+if(posY + h < boxH){
+
+posY =
+boxH - h;
+
+}
 
 
 /*
 Apply
 */
 
-cropImage.style.width =
-width + "px";
+cropPhoto.style.left =
+posX + "px";
 
-cropImage.style.height =
-height + "px";
-
-cropImage.style.left =
-imageX + "px";
-
-cropImage.style.top =
-imageY + "px";
+cropPhoto.style.top =
+posY + "px";
 
 }
 
 
-/* =====================================
+/* ==================================================
 ZOOM
-===================================== */
+================================================== */
 
 zoomSlider.addEventListener(
 "input",
 function(){
 
-const newZoom =
-parseInt(
-this.value
-) / 100;
+if(!img){
+
+return;
+
+}
+
+
+zoom =
+parseInt(this.value) / 100;
 
 
 /*
-Zoom from center
+Keep current center
 */
 
-const boxWidth =
-cropArea.clientWidth;
+const boxW =
+cropWindow.clientWidth;
 
-const boxHeight =
-cropArea.clientHeight;
+const boxH =
+cropWindow.clientHeight;
 
 
 const centerX =
-boxWidth / 2;
+boxW / 2;
 
 const centerY =
-boxHeight / 2;
+boxH / 2;
 
 
 /*
-Current image position
+Old image center
 */
 
-const oldWidth =
+const oldW =
 parseFloat(
-cropImage.style.width
-) || boxWidth;
+cropPhoto.style.width
+) || boxW;
 
-
-const oldHeight =
+const oldH =
 parseFloat(
-cropImage.style.height
-) || boxHeight;
+cropPhoto.style.height
+) || boxH;
 
 
 const oldCenterX =
-imageX +
-oldWidth / 2;
-
+posX + oldW / 2;
 
 const oldCenterY =
-imageY +
-oldHeight / 2;
+posY + oldH / 2;
 
 
 /*
-Change zoom
+Base scale
 */
-
-zoom =
-newZoom;
-
-
-/*
-Calculate new size
-*/
-
-const iw =
-sourceImage.naturalWidth;
-
-const ih =
-sourceImage.naturalHeight;
-
 
 const baseScale =
 Math.max(
-boxWidth / iw,
-boxHeight / ih
+boxW / img.naturalWidth,
+boxH / img.naturalHeight
 );
 
 
-const newWidth =
-iw *
+/*
+New dimensions
+*/
+
+const newW =
+img.naturalWidth *
 baseScale *
 zoom;
 
-const newHeight =
-ih *
+const newH =
+img.naturalHeight *
 baseScale *
 zoom;
 
 
 /*
-Keep image center
+Keep center
 */
 
-imageX =
+posX =
 centerX -
 (
 centerX - oldCenterX
 ) *
 (
-newWidth /
-oldWidth
+newW / oldW
 );
 
-
-imageY =
+posY =
 centerY -
 (
 centerY - oldCenterY
 ) *
 (
-newHeight /
-oldHeight
+newH / oldH
 );
 
 
-updateCropImage();
+/*
+Update
+*/
+
+updateImage();
 
 
 zoomValue.innerText =
 this.value + "%";
 
 
-if(sourceImage){
-
 createSheet();
-
-}
 
 });
 
 
-/* =====================================
+/* ==================================================
 MOUSE DRAG
-===================================== */
+================================================== */
 
-cropArea.addEventListener(
+cropWindow.addEventListener(
 "mousedown",
 function(e){
 
-if(!sourceImage){
+if(!img){
 
 return;
 
 }
 
+
 dragging = true;
 
-startMouseX = e.clientX;
+startX =
+e.clientX;
 
-startMouseY = e.clientY;
+startY =
+e.clientY;
 
-startImageX = imageX;
+oldX =
+posX;
 
-startImageY = imageY;
+oldY =
+posY;
+
+cropWindow.style.cursor =
+"grabbing";
 
 });
 
@@ -1164,28 +1273,22 @@ return;
 }
 
 
-const dx =
+posX =
+oldX +
+(
 e.clientX -
-startMouseX;
+startX
+);
 
-const dy =
+posY =
+oldY +
+(
 e.clientY -
-startMouseY;
+startY
+);
 
 
-imageX =
-startImageX +
-dx;
-
-imageY =
-startImageY +
-dy;
-
-
-keepImageInside();
-
-
-updateCropImage();
+updateImage();
 
 });
 
@@ -1196,46 +1299,53 @@ function(){
 
 dragging = false;
 
+cropWindow.style.cursor =
+"grab";
+
 });
 
 
-/* =====================================
+/* ==================================================
 TOUCH DRAG
-===================================== */
+================================================== */
 
-cropArea.addEventListener(
+cropWindow.addEventListener(
 "touchstart",
 function(e){
 
-if(!sourceImage){
+if(!img){
 
 return;
 
 }
 
+
 const touch =
 e.touches[0];
 
+
 dragging = true;
 
-startMouseX =
+startX =
 touch.clientX;
 
-startMouseY =
+startY =
 touch.clientY;
 
-startImageX =
-imageX;
+oldX =
+posX;
 
-startImageY =
-imageY;
+oldY =
+posY;
 
 },
-{passive:true}
+{
+passive:true
+}
 );
 
 
-window.addEventListener(
+cropWindow.addEventListener(
 "touchmove",
 function(e){
 
@@ -1250,35 +1360,30 @@ const touch =
 e.touches[0];
 
 
-const dx =
+posX =
+oldX +
+(
 touch.clientX -
-startMouseX;
+startX
+);
 
-const dy =
+posY =
+oldY +
+(
 touch.clientY -
-startMouseY;
-
-
-imageX =
-startImageX +
-dx;
-
-imageY =
-startImageY +
-dy;
-
-
-keepImageInside();
-
-
-updateCropImage();
-
-},
-{passive:true}
+startY
 );
 
 
-window.addEventListener(
+updateImage();
+
+},
+{
+passive:true
+});
+
+
+cropWindow.addEventListener(
 "touchend",
 function(){
 
@@ -1287,116 +1392,11 @@ dragging = false;
 });
 
 
-/* =====================================
-KEEP IMAGE INSIDE CROP
-===================================== */
+/* ==================================================
+GET PAPER
+================================================== */
 
-function keepImageInside(){
-
-if(!sourceImage){
-
-return;
-
-}
-
-
-const boxWidth =
-cropArea.clientWidth;
-
-const boxHeight =
-cropArea.clientHeight;
-
-
-const imageWidth =
-parseFloat(
-cropImage.style.width
-);
-
-const imageHeight =
-parseFloat(
-cropImage.style.height
-);
-
-
-/*
-Left limit
-*/
-
-if(imageX > 0){
-
-imageX = 0;
-
-}
-
-
-/*
-Right limit
-*/
-
-if(
-imageX +
-imageWidth <
-boxWidth
-){
-
-imageX =
-boxWidth -
-imageWidth;
-
-}
-
-
-/*
-Top limit
-*/
-
-if(imageY > 0){
-
-imageY = 0;
-
-}
-
-
-/*
-Bottom limit
-*/
-
-if(
-imageY +
-imageHeight <
-boxHeight
-){
-
-imageY =
-boxHeight -
-imageHeight;
-
-}
-
-}
-
-
-/* =====================================
-CREATE SHEET
-===================================== */
-
-function createSheet(){
-
-if(!sourceImage){
-
-return false;
-
-}
-
-
-const canvas =
-document.getElementById(
-"sheetCanvas"
-);
-
-const ctx =
-canvas.getContext("2d");
-
+function getPaper(){
 
 const paper =
 document.getElementById(
@@ -1404,36 +1404,257 @@ document.getElementById(
 ).value;
 
 
-/*
-Paper size
-*/
-
-let paperWidth;
-
-let paperHeight;
-
-
 if(paper === "4x6"){
 
-paperWidth = 1200;
+return {
 
-paperHeight = 1800;
+width:1200,
 
-}
-else{
+height:1800
 
-paperWidth = 2480;
-
-paperHeight = 3508;
+};
 
 }
+
+
+return {
+
+width:2480,
+
+height:3508
+
+};
+
+}
+
+
+/* ==================================================
+DRAW PASSPORT PHOTO
+================================================== */
+
+function drawPassportPhoto(
+ctx,
+x,
+y,
+w,
+h
+){
+
+if(!img){
+
+return;
+
+}
+
+
+/*
+Background
+*/
+
+const bg =
+document.getElementById(
+"background"
+).value;
+
+
+if(bg === "white"){
+
+ctx.fillStyle =
+"#ffffff";
+
+ctx.fillRect(
+x,
+y,
+w,
+h
+);
+
+}
+
+
+if(bg === "blue"){
+
+ctx.fillStyle =
+"#d9ecff";
+
+ctx.fillRect(
+x,
+y,
+w,
+h
+);
+
+}
+
+
+/*
+Crop editor dimensions
+*/
+
+const boxW =
+cropWindow.clientWidth;
+
+const boxH =
+cropWindow.clientHeight;
+
+
+/*
+Base scale
+*/
+
+const baseScale =
+Math.max(
+boxW / img.naturalWidth,
+boxH / img.naturalHeight
+);
+
+
+/*
+Final scale
+*/
+
+const scale =
+baseScale * zoom;
+
+
+/*
+Image dimensions
+*/
+
+const imageW =
+img.naturalWidth * scale;
+
+const imageH =
+img.naturalHeight * scale;
+
+
+/*
+Map crop position to final photo
+*/
+
+const scaleX =
+w / boxW;
+
+const scaleY =
+h / boxH;
+
+
+const dx =
+x +
+posX * scaleX;
+
+const dy =
+y +
+posY * scaleY;
+
+
+const dw =
+imageW * scaleX;
+
+const dh =
+imageH * scaleY;
+
+
+/*
+Clip photo
+*/
+
+ctx.save();
+
+ctx.beginPath();
+
+ctx.rect(
+x,
+y,
+w,
+h
+);
+
+ctx.clip();
+
+
+/*
+Draw
+*/
+
+ctx.drawImage(
+img,
+dx,
+dy,
+dw,
+dh
+);
+
+
+ctx.restore();
+
+
+/*
+FULL BORDER
+*/
+
+const border =
+document.getElementById(
+"border"
+).value;
+
+
+if(border === "yes"){
+
+ctx.save();
+
+ctx.strokeStyle =
+"#000000";
+
+ctx.lineWidth =
+4;
+
+ctx.strokeRect(
+x + 2,
+y + 2,
+w - 4,
+h - 4
+);
+
+ctx.restore();
+
+}
+
+}
+
+
+/* ==================================================
+CREATE SHEET
+================================================== */
+
+function createSheet(){
+
+if(!img){
+
+return false;
+
+}
+
+
+const paper =
+getPaper();
+
+
+const canvas =
+document.getElementById(
+"sheetCanvas"
+);
+
+
+const ctx =
+canvas.getContext("2d");
 
 
 canvas.width =
-paperWidth;
+paper.width;
 
 canvas.height =
-paperHeight;
+paper.height;
 
 
 /*
@@ -1446,19 +1667,19 @@ ctx.fillStyle =
 ctx.fillRect(
 0,
 0,
-paperWidth,
-paperHeight
+paper.width,
+paper.height
 );
 
 
 /*
-Passport size
+35 × 45 mm @ 300 DPI
 */
 
-const photoWidth =
+const photoW =
 413;
 
-const photoHeight =
+const photoH =
 531;
 
 
@@ -1478,7 +1699,8 @@ document.getElementById(
 Gap
 */
 
-const gap = 15;
+const gap =
+15;
 
 
 /*
@@ -1488,7 +1710,17 @@ Columns
 let columns;
 
 
-if(paper === "4x6"){
+/*
+4x6
+*/
+
+if(
+document.getElementById(
+"paper"
+).value
+===
+"4x6"
+){
 
 if(copies <= 4){
 
@@ -1502,6 +1734,12 @@ columns = 3;
 }
 
 }
+
+
+/*
+A4
+*/
+
 else{
 
 if(copies <= 4){
@@ -1524,67 +1762,25 @@ columns = 5;
 
 
 /*
-Maximum columns based on width
+Top-left
 */
 
-const maxColumns =
-Math.floor(
-(
-paperWidth - 30
-) /
-(
-photoWidth + gap
-)
-);
+const marginLeft = 20;
+
+const marginTop = 20;
 
 
 /*
-Safety
-*/
-
-columns =
-Math.min(
-columns,
-maxColumns
-);
-
-
-/*
-Rows
-*/
-
-const rows =
-Math.ceil(
-copies / columns
-);
-
-
-/*
-----------------------------------
-TOP LEFT ALIGNMENT
-----------------------------------
-
-IMPORTANT:
-अब photos center नहीं होंगी।
-
-*/
-
-const leftMargin = 20;
-
-const topMargin = 20;
-
-
-/*
-Draw photos
+Draw
 */
 
 for(
-let i = 0;
-i < copies;
+let i=0;
+i<copies;
 i++
 ){
 
-const column =
+const col =
 i % columns;
 
 const row =
@@ -1594,31 +1790,27 @@ i / columns
 
 
 const x =
-leftMargin +
-column *
+marginLeft +
+col *
 (
-photoWidth + gap
+photoW + gap
 );
 
 
 const y =
-topMargin +
+marginTop +
 row *
 (
-photoHeight + gap
+photoH + gap
 );
 
 
-/*
-Draw one passport photo
-*/
-
-drawFinalPhoto(
+drawPassportPhoto(
 ctx,
 x,
 y,
-photoWidth,
-photoHeight
+photoW,
+photoH
 );
 
 }
@@ -1635,16 +1827,7 @@ document
 .innerText =
 "✅ " +
 copies +
-" photos तैयार | " +
-(
-paper === "4x6"
-?
-"4×6 Inch"
-:
-"A4"
-)
-+
-" | 35×45 mm";
+" passport photos तैयार हैं।";
 
 
 return true;
@@ -1652,222 +1835,19 @@ return true;
 }
 
 
-/* =====================================
-DRAW FINAL PHOTO
-===================================== */
+/* ==================================================
+DOWNLOAD
+================================================== */
 
-function drawFinalPhoto(
-ctx,
-x,
-y,
-width,
-height
-){
-
-/*
-Background
-*/
-
-const background =
 document
 .getElementById(
-"background"
+"downloadBtn"
 )
-.value;
+.addEventListener(
+"click",
+function(){
 
-
-if(background === "white"){
-
-ctx.fillStyle =
-"#fff";
-
-ctx.fillRect(
-x,
-y,
-width,
-height
-);
-
-}
-
-else if(background === "blue"){
-
-ctx.fillStyle =
-"#d9ecff";
-
-ctx.fillRect(
-x,
-y,
-width,
-height
-);
-
-}
-
-
-/*
---------------------------------
-CLIP PASSPORT PHOTO
---------------------------------
-*/
-
-ctx.save();
-
-ctx.beginPath();
-
-ctx.rect(
-x,
-y,
-width,
-height
-);
-
-ctx.clip();
-
-
-/*
---------------------------------
-DRAW CROPPED PHOTO
---------------------------------
-
-यह crop editor की exact
-position और zoom को final sheet
-में apply करता है।
-*/
-
-const boxWidth =
-cropArea.clientWidth;
-
-const boxHeight =
-cropArea.clientHeight;
-
-
-const sourceScale =
-Math.max(
-boxWidth /
-sourceImage.naturalWidth,
-
-boxHeight /
-sourceImage.naturalHeight
-);
-
-
-const finalScale =
-sourceScale *
-zoom;
-
-
-/*
-Image size in crop editor
-*/
-
-const displayedWidth =
-sourceImage.naturalWidth *
-finalScale;
-
-
-const displayedHeight =
-sourceImage.naturalHeight *
-finalScale;
-
-
-/*
-Map crop editor position
-to final passport photo
-*/
-
-const scaleX =
-width /
-boxWidth;
-
-const scaleY =
-height /
-boxHeight;
-
-
-const drawX =
-x +
-imageX *
-scaleX;
-
-
-const drawY =
-y +
-imageY *
-scaleY;
-
-
-const drawWidth =
-displayedWidth *
-scaleX;
-
-
-const drawHeight =
-displayedHeight *
-scaleY;
-
-
-/*
-Draw image
-*/
-
-ctx.drawImage(
-sourceImage,
-drawX,
-drawY,
-drawWidth,
-drawHeight
-);
-
-
-ctx.restore();
-
-
-/*
---------------------------------
-FULL BORDER
---------------------------------
-*/
-
-const border =
-document
-.getElementById(
-"border"
-)
-.value;
-
-
-if(border === "yes"){
-
-ctx.save();
-
-ctx.strokeStyle =
-"#000000";
-
-ctx.lineWidth =
-4;
-
-ctx.strokeRect(
-x + 2,
-y + 2,
-width - 4,
-height - 4
-);
-
-ctx.restore();
-
-}
-
-}
-
-
-/* =====================================
-DOWNLOAD JPG
-===================================== */
-
-function downloadJPG(){
-
-if(!sourceImage){
+if(!img){
 
 alert(
 "पहले photo upload करें।"
@@ -1878,15 +1858,7 @@ return;
 }
 
 
-const success =
 createSheet();
-
-
-if(!success){
-
-return;
-
-}
 
 
 const canvas =
@@ -1896,13 +1868,12 @@ document.getElementById(
 
 
 canvas.toBlob(
-
 function(blob){
 
 if(!blob){
 
 alert(
-"JPG बनाने में समस्या हुई।"
+"Download में समस्या हुई।"
 );
 
 return;
@@ -1932,23 +1903,15 @@ document.getElementById(
 ).value;
 
 
-if(paper === "a4"){
-
 link.download =
-"passport-photo-A4.jpg";
-
-}
-else{
-
-link.download =
+paper === "a4"
+?
+"passport-photo-A4.jpg"
+:
 "passport-photo-4x6.jpg";
 
-}
 
-
-document
-.body
-.appendChild(
+document.body.appendChild(
 link
 );
 
@@ -1956,9 +1919,7 @@ link
 link.click();
 
 
-document
-.body
-.removeChild(
+document.body.removeChild(
 link
 );
 
@@ -1986,41 +1947,62 @@ document
 },
 "image/jpeg",
 0.98
-
 );
 
+});
 
-/* =====================================
+
+/* ==================================================
+CREATE BUTTON
+================================================== */
+
+document
+.getElementById(
+"createBtn"
+)
+.addEventListener(
+"click",
+function(){
+
+createSheet();
+
+});
+
+
+/* ==================================================
 RESET
-===================================== */
+================================================== */
 
-function resetTool(){
+document
+.getElementById(
+"resetBtn"
+)
+.addEventListener(
+"click",
+function(){
 
-sourceImage = null;
-
-imageX = 0;
-
-imageY = 0;
+img = null;
 
 zoom = 1;
 
+posX = 0;
 
-document
-.getElementById(
-"photoInput"
-)
-.value = "";
+posY = 0;
+
+dragging = false;
 
 
-cropImage.style.display =
+input.value = "";
+
+
+cropPhoto.src = "";
+
+cropPhoto.style.display =
 "none";
 
 
-document
-.getElementById(
-"zoom"
-)
-.value = 100;
+zoomSlider.value =
+100;
 
 
 zoomValue.innerText =
@@ -2038,8 +2020,7 @@ canvas.getContext("2d");
 
 
 ctx.fillStyle =
-"#fff";
-
+"#ffffff";
 
 ctx.fillRect(
 0,
@@ -2056,9 +2037,10 @@ document
 .innerText =
 "पहले photo upload करें।";
 
-}
+});
 
 </script>
 
 </body>
+
 </html>
