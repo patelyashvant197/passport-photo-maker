@@ -4,18 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Passport Photo Maker | 35x45mm</title>
+<title>Passport Photo Maker</title>
 
 <style>
 *{
   box-sizing:border-box;
-  margin:0;
-  padding:0;
 }
 
 body{
+  margin:0;
   font-family:Arial,sans-serif;
-  background:#f2f5f9;
+  background:#f2f4f7;
   color:#222;
 }
 
@@ -27,8 +26,8 @@ header{
 }
 
 header h1{
+  margin:0 0 7px;
   font-size:26px;
-  margin-bottom:6px;
 }
 
 .container{
@@ -41,8 +40,8 @@ header h1{
   background:white;
   padding:22px;
   border-radius:12px;
-  box-shadow:0 3px 15px rgba(0,0,0,.08);
   margin-bottom:20px;
+  box-shadow:0 3px 15px rgba(0,0,0,.08);
 }
 
 .upload{
@@ -59,7 +58,7 @@ header h1{
 
 .controls{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
   gap:15px;
   margin-top:20px;
 }
@@ -70,16 +69,11 @@ header h1{
   gap:7px;
 }
 
-label{
-  font-weight:bold;
-}
-
 select{
   padding:11px;
   border:1px solid #ccc;
   border-radius:7px;
   font-size:15px;
-  background:white;
 }
 
 button{
@@ -87,9 +81,9 @@ button{
   padding:13px 20px;
   border-radius:7px;
   cursor:pointer;
-  font-size:15px;
   font-weight:bold;
-  margin-top:18px;
+  font-size:15px;
+  margin-top:20px;
   margin-right:8px;
 }
 
@@ -117,8 +111,8 @@ button{
 .preview{
   min-height:350px;
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
   background:#eee;
   border-radius:8px;
   overflow:hidden;
@@ -129,25 +123,25 @@ button{
   max-height:400px;
 }
 
-.sheet-area{
-  display:flex;
-  justify-content:center;
-  align-items:center;
+.canvasBox{
+  width:100%;
   overflow:auto;
+  text-align:center;
 }
 
 canvas{
-  max-width:100%;
+  width:100%;
+  max-width:600px;
   height:auto;
   border:1px solid #aaa;
   background:white;
 }
 
-.info{
+.status{
   margin-top:15px;
   padding:12px;
-  background:#eef7ff;
   border-radius:7px;
+  background:#eef7ff;
   font-size:14px;
 }
 
@@ -163,7 +157,7 @@ canvas{
 
 <header>
 <h1>📷 Passport Photo Maker</h1>
-<p>35 × 45 mm | Computer Center Tool</p>
+<p>35 × 45 mm | 4 × 6 Inch | Computer Center</p>
 </header>
 
 <div class="container">
@@ -174,9 +168,7 @@ canvas{
 
 <h2>📤 Photo Upload करें</h2>
 
-<p style="margin-top:8px">
-JPG या PNG फोटो चुनें
-</p>
+<p>JPG या PNG फोटो चुनें</p>
 
 <input
 type="file"
@@ -186,101 +178,77 @@ accept="image/jpeg,image/png"
 
 </div>
 
+
 <div class="controls">
 
 <div class="control">
-<label>Passport Size</label>
+<label>Photo Size</label>
 
 <select id="photoSize">
 <option value="35x45">35 × 45 mm</option>
 </select>
 </div>
 
-<div class="control">
 
+<div class="control">
 <label>Background</label>
 
 <select id="background">
-
 <option value="original">Original</option>
 <option value="white">White</option>
 <option value="blue">Blue</option>
-
 </select>
-
 </div>
 
-<div class="control">
 
+<div class="control">
 <label>Copies</label>
 
 <select id="copies">
-
 <option value="3">3 Copies</option>
 <option value="4">4 Copies</option>
 <option value="6" selected>6 Copies</option>
 <option value="8">8 Copies</option>
 <option value="12">12 Copies</option>
-
 </select>
-
 </div>
 
-<div class="control">
 
-<label>Paper</label>
+<div class="control">
+<label>Paper Size</label>
 
 <select id="paper">
-
 <option value="4x6">4 × 6 Inch</option>
-
 </select>
-
 </div>
 
-<div class="control">
 
+<div class="control">
 <label>Border</label>
 
 <select id="border">
-
 <option value="yes">Border ON</option>
 <option value="no">Border OFF</option>
-
 </select>
-
 </div>
 
 </div>
 
-<div>
 
-<button
-class="create"
-onclick="createSheet()">
-✨ Create Sheet
+<button class="create" onclick="createSheet()">
+✨ Create Passport Sheet
 </button>
 
-<button
-class="download"
-onclick="downloadJPG()">
+<button class="download" onclick="downloadJPG()">
 ⬇️ Download JPG
 </button>
 
-<button
-class="reset"
-onclick="resetTool()">
+<button class="reset" onclick="resetTool()">
 🔄 Reset
 </button>
 
-</div>
-
-<div class="info">
-
-<b>Photo Size:</b> 35 × 45 mm<br>
-<b>Paper:</b> 4 × 6 inch<br>
-<b>Output:</b> High Quality JPG
-
+<div class="status" id="status">
+पहले फोटो upload करें।
 </div>
 
 </div>
@@ -290,19 +258,14 @@ onclick="resetTool()">
 
 <div class="card">
 
-<h3 style="margin-bottom:15px">
-👤 Original Photo
-</h3>
+<h3>👤 Original Photo</h3>
 
 <div class="preview">
 
-<img
-id="previewImage"
-style="display:none"
->
+<img id="previewImage" style="display:none;">
 
-<span id="empty">
-Photo upload करने के बाद यहाँ दिखाई देगी
+<span id="emptyText">
+Photo यहाँ दिखाई देगी
 </span>
 
 </div>
@@ -312,11 +275,9 @@ Photo upload करने के बाद यहाँ दिखाई दे�
 
 <div class="card">
 
-<h3 style="margin-bottom:15px">
-🖨️ 4 × 6 Sheet Preview
-</h3>
+<h3>🖨️ 4 × 6 Passport Sheet</h3>
 
-<div class="sheet-area">
+<div class="canvasBox">
 
 <canvas
 id="sheetCanvas"
@@ -332,44 +293,71 @@ height="1800">
 
 </div>
 
+
 <script>
 
-let image = null;
+let sourceImage = null;
 
 
 /* =========================
-   PHOTO UPLOAD
+PHOTO UPLOAD
 ========================= */
 
 document
 .getElementById("photoInput")
-.addEventListener("change",function(e){
+.addEventListener("change", function(event){
 
-const file=e.target.files[0];
+const file = event.target.files[0];
 
-if(!file)return;
+if(!file){
 
-const reader=new FileReader();
+return;
 
-reader.onload=function(event){
+}
 
-image=new Image();
+if(!file.type.startsWith("image/")){
 
-image.onload=function(){
+alert("कृपया JPG या PNG फोटो चुनें।");
 
-const preview=
+return;
+
+}
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+const img = new Image();
+
+img.onload = function(){
+
+sourceImage = img;
+
+const preview =
 document.getElementById("previewImage");
 
-preview.src=event.target.result;
+preview.src = e.target.result;
 
-preview.style.display="block";
+preview.style.display = "block";
 
-document.getElementById("empty")
-.style.display="none";
+document
+.getElementById("emptyText")
+.style.display = "none";
+
+document
+.getElementById("status")
+.innerText =
+"Photo upload हो गई है। अब Create Passport Sheet दबाएँ।";
 
 };
 
-image.src=event.target.result;
+img.onerror = function(){
+
+alert("Photo load नहीं हो सकी।");
+
+};
+
+img.src = e.target.result;
 
 };
 
@@ -379,142 +367,123 @@ reader.readAsDataURL(file);
 
 
 /* =========================
-   CREATE SHEET
+CALCULATE CENTER CROP
+35:45 RATIO
 ========================= */
 
-function createSheet(){
+function getCrop(){
 
-if(!image){
+const targetRatio = 35 / 45;
 
-alert("पहले फोटो upload करें।");
+const imageWidth = sourceImage.naturalWidth;
+const imageHeight = sourceImage.naturalHeight;
 
-return;
+const imageRatio =
+imageWidth / imageHeight;
+
+let cropWidth;
+let cropHeight;
+let cropX;
+let cropY;
+
+if(imageRatio > targetRatio){
+
+/*
+Image ज्यादा चौड़ी है
+Width को crop करेंगे
+*/
+
+cropHeight = imageHeight;
+
+cropWidth = imageHeight * targetRatio;
+
+cropX =
+(imageWidth - cropWidth) / 2;
+
+cropY = 0;
+
+}else{
+
+/*
+Image ज्यादा लंबी है
+Height को crop करेंगे
+*/
+
+cropWidth = imageWidth;
+
+cropHeight = imageWidth / targetRatio;
+
+cropX = 0;
+
+cropY =
+(imageHeight - cropHeight) / 2;
 
 }
 
-const canvas=
-document.getElementById("sheetCanvas");
+return {
+x:cropX,
+y:cropY,
+width:cropWidth,
+height:cropHeight
+};
 
-const ctx=
-canvas.getContext("2d");
+}
 
-const copies=
-parseInt(
-document.getElementById("copies").value
-);
 
-const background=
+/* =========================
+DRAW PASSPORT PHOTO
+========================= */
+
+function drawPassportPhoto(
+ctx,
+x,
+y,
+width,
+height
+){
+
+const crop = getCrop();
+
+const background =
 document.getElementById("background").value;
 
-const border=
+const border =
 document.getElementById("border").value;
 
 
 /*
-4×6 inch at 300 DPI
-= 1200 × 1800 pixels
+Background
 */
 
-canvas.width=1200;
-canvas.height=1800;
+if(background === "white"){
 
-
-/* Paper background */
-
-ctx.fillStyle="white";
+ctx.fillStyle = "#ffffff";
 
 ctx.fillRect(
-0,
-0,
-canvas.width,
-canvas.height
+x,
+y,
+width,
+height
 );
 
-
-/*
-35×45mm at 300 DPI
-
-35mm = 413px approx
-45mm = 531px approx
-*/
-
-const photoW=413;
-const photoH=531;
-
-
-/* Gap */
-
-const gap=25;
-
-
-/*
-Maximum columns
-*/
-
-let columns=2;
-
-if(copies>=6){
-columns=3;
 }
 
-if(copies>=12){
-columns=4;
+else if(background === "blue"){
+
+ctx.fillStyle = "#d9ecff";
+
+ctx.fillRect(
+x,
+y,
+width,
+height
+);
+
 }
 
 
 /*
-Rows
-*/
-
-const rows=
-Math.ceil(copies/columns);
-
-
-/*
-Total layout size
-*/
-
-const totalW=
-columns*photoW+
-(columns-1)*gap;
-
-const totalH=
-rows*photoH+
-(rows-1)*gap;
-
-
-/*
-Center sheet
-*/
-
-const startX=
-(canvas.width-totalW)/2;
-
-const startY=
-(canvas.height-totalH)/2;
-
-
-/*
-Draw photos
-*/
-
-for(let i=0;i<copies;i++){
-
-const col=i%columns;
-
-const row=Math.floor(i/columns);
-
-const x=
-startX+
-col*(photoW+gap);
-
-const y=
-startY+
-row*(photoH+gap);
-
-
-/*
-Photo clipping
+Clip to passport rectangle
 */
 
 ctx.save();
@@ -524,54 +493,31 @@ ctx.beginPath();
 ctx.rect(
 x,
 y,
-photoW,
-photoH
+width,
+height
 );
 
 ctx.clip();
 
 
 /*
-Background
-*/
-
-if(background==="white"){
-
-ctx.fillStyle="white";
-
-ctx.fillRect(
-x,
-y,
-photoW,
-photoH
-);
-
-}
-
-else if(background==="blue"){
-
-ctx.fillStyle="#d9ecff";
-
-ctx.fillRect(
-x,
-y,
-photoW,
-photoH
-);
-
-}
-
-
-/*
-Photo
+IMPORTANT:
+यह image को stretch नहीं करेगा।
+यह center crop करके passport ratio में draw करेगा।
 */
 
 ctx.drawImage(
-image,
+sourceImage,
+
+crop.x,
+crop.y,
+crop.width,
+crop.height,
+
 x,
 y,
-photoW,
-photoH
+width,
+height
 );
 
 ctx.restore();
@@ -581,20 +527,18 @@ ctx.restore();
 Border
 */
 
-if(border==="yes"){
+if(border === "yes"){
 
-ctx.strokeStyle="#222";
+ctx.strokeStyle = "#222";
 
-ctx.lineWidth=3;
+ctx.lineWidth = 3;
 
 ctx.strokeRect(
 x,
 y,
-photoW,
-photoH
+width,
+height
 );
-
-}
 
 }
 
@@ -602,12 +546,181 @@ photoH
 
 
 /* =========================
-   DOWNLOAD JPG
+CREATE SHEET
+========================= */
+
+function createSheet(){
+
+if(!sourceImage){
+
+alert("पहले फोटो upload करें।");
+
+return false;
+
+}
+
+const canvas =
+document.getElementById("sheetCanvas");
+
+const ctx =
+canvas.getContext("2d");
+
+
+/*
+4 × 6 inch
+300 DPI
+*/
+
+const paperWidth = 1200;
+const paperHeight = 1800;
+
+canvas.width = paperWidth;
+canvas.height = paperHeight;
+
+
+/*
+White paper
+*/
+
+ctx.fillStyle = "#ffffff";
+
+ctx.fillRect(
+0,
+0,
+paperWidth,
+paperHeight
+);
+
+
+/*
+35 × 45 mm
+300 DPI
+
+35mm ≈ 413px
+45mm ≈ 531px
+*/
+
+const photoWidth = 413;
+const photoHeight = 531;
+
+
+/*
+Copies
+*/
+
+const copies =
+parseInt(
+document.getElementById("copies").value
+);
+
+
+/*
+Spacing
+*/
+
+const gap = 20;
+
+
+/*
+Calculate columns
+*/
+
+let columns = 2;
+
+if(copies >= 6){
+
+columns = 3;
+
+}
+
+if(copies >= 12){
+
+columns = 4;
+
+}
+
+
+/*
+Calculate rows
+*/
+
+const rows =
+Math.ceil(copies / columns);
+
+
+/*
+Total size
+*/
+
+const totalWidth =
+columns * photoWidth +
+(columns - 1) * gap;
+
+const totalHeight =
+rows * photoHeight +
+(rows - 1) * gap;
+
+
+/*
+Center on 4×6 paper
+*/
+
+const startX =
+(paperWidth - totalWidth) / 2;
+
+const startY =
+(paperHeight - totalHeight) / 2;
+
+
+/*
+Draw every photo
+*/
+
+for(let i = 0; i < copies; i++){
+
+const column =
+i % columns;
+
+const row =
+Math.floor(i / columns);
+
+const x =
+startX +
+column * (photoWidth + gap);
+
+const y =
+startY +
+row * (photoHeight + gap);
+
+drawPassportPhoto(
+ctx,
+x,
+y,
+photoWidth,
+photoHeight
+);
+
+}
+
+
+document
+.getElementById("status")
+.innerText =
+copies +
+" passport photos की 4×6 sheet तैयार है। Photo size: 35×45 mm.";
+
+return true;
+
+}
+
+
+/* =========================
+DOWNLOAD JPG
 ========================= */
 
 function downloadJPG(){
 
-if(!image){
+if(!sourceImage){
 
 alert("पहले photo upload करें।");
 
@@ -615,55 +728,120 @@ return;
 
 }
 
-createSheet();
 
-const canvas=
+/*
+पहले sheet बनाओ
+*/
+
+const created = createSheet();
+
+if(!created){
+
+return;
+
+}
+
+
+const canvas =
 document.getElementById("sheetCanvas");
 
-const link=
+
+/*
+Convert canvas to JPG
+*/
+
+canvas.toBlob(
+function(blob){
+
+if(!blob){
+
+alert("JPG बनाने में समस्या हुई।");
+
+return;
+
+}
+
+
+const url =
+URL.createObjectURL(blob);
+
+
+/*
+Download link
+*/
+
+const link =
 document.createElement("a");
 
-link.download=
+link.href = url;
+
+link.download =
 "passport-photo-4x6.jpg";
 
-link.href=
-canvas.toDataURL(
+document.body.appendChild(link);
+
+link.click();
+
+document.body.removeChild(link);
+
+
+/*
+Memory cleanup
+*/
+
+setTimeout(
+function(){
+
+URL.revokeObjectURL(url);
+
+},
+1000
+);
+
+
+document
+.getElementById("status")
+.innerText =
+"✅ JPG successfully download हो गई।";
+
+},
 "image/jpeg",
 0.95
 );
-
-link.click();
 
 }
 
 
 /* =========================
-   RESET
+RESET
 ========================= */
 
 function resetTool(){
 
-image=null;
+sourceImage = null;
 
 document
 .getElementById("photoInput")
-.value="";
+.value = "";
+
 
 document
 .getElementById("previewImage")
-.style.display="none";
+.style.display = "none";
+
 
 document
-.getElementById("empty")
-.style.display="block";
+.getElementById("emptyText")
+.style.display = "block";
 
-const canvas=
+
+const canvas =
 document.getElementById("sheetCanvas");
 
-const ctx=
+const ctx =
 canvas.getContext("2d");
 
-ctx.fillStyle="white";
+ctx.fillStyle = "#ffffff";
 
 ctx.fillRect(
 0,
@@ -671,6 +849,12 @@ ctx.fillRect(
 canvas.width,
 canvas.height
 );
+
+
+document
+.getElementById("status")
+.innerText =
+"पहले फोटो upload करें।";
 
 }
 
