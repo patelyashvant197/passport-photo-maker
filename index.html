@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Passport Photo Maker</title>
 
 <style>
-
 *{
     box-sizing:border-box;
 }
@@ -18,13 +14,13 @@ content="width=device-width, initial-scale=1.0">
 body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:#f1f4f8;
+    background:#eef2f6;
     color:#222;
 }
 
 header{
     background:#1769aa;
-    color:white;
+    color:#fff;
     text-align:center;
     padding:20px;
 }
@@ -40,29 +36,25 @@ header p{
 }
 
 .container{
-    max-width:1150px;
+    max-width:1200px;
     margin:25px auto;
     padding:15px;
 }
 
 .card{
-    background:white;
-    border-radius:12px;
+    background:#fff;
     padding:22px;
+    border-radius:12px;
     margin-bottom:20px;
     box-shadow:0 3px 15px rgba(0,0,0,.08);
 }
 
 .upload{
     border:2px dashed #1769aa;
+    background:#f8fbff;
     border-radius:10px;
     padding:30px;
     text-align:center;
-    background:#f8fbff;
-}
-
-.upload h2{
-    margin-top:0;
 }
 
 .upload input{
@@ -84,38 +76,33 @@ header p{
 }
 
 .control label{
-    font-weight:bold;
     font-size:14px;
-}
-
-select,
-input[type="range"]{
-    width:100%;
+    font-weight:bold;
 }
 
 select{
     padding:11px;
     border:1px solid #ccc;
     border-radius:7px;
-    background:white;
     font-size:15px;
+    background:#fff;
 }
 
-.range-value{
+input[type="range"]{
+    width:100%;
+}
+
+.zoom-value{
     font-size:13px;
     color:#555;
-}
-
-.buttons{
-    margin-top:20px;
 }
 
 button{
     border:0;
     border-radius:7px;
     padding:13px 20px;
+    margin-top:20px;
     margin-right:8px;
-    margin-bottom:8px;
     cursor:pointer;
     font-size:15px;
     font-weight:bold;
@@ -123,17 +110,17 @@ button{
 
 .create{
     background:#1769aa;
-    color:white;
+    color:#fff;
 }
 
 .download{
     background:#198754;
-    color:white;
+    color:#fff;
 }
 
 .reset{
     background:#dc3545;
-    color:white;
+    color:#fff;
 }
 
 .workspace{
@@ -143,12 +130,12 @@ button{
 }
 
 .preview-box{
-    background:#eee;
     min-height:400px;
+    background:#eee;
     border-radius:8px;
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     overflow:hidden;
 }
 
@@ -165,10 +152,10 @@ button{
 
 canvas{
     width:100%;
-    max-width:600px;
+    max-width:650px;
     height:auto;
-    background:white;
     border:1px solid #aaa;
+    background:#fff;
 }
 
 .status{
@@ -179,7 +166,7 @@ canvas{
     font-size:14px;
 }
 
-.small-info{
+.info{
     margin-top:10px;
     color:#666;
     font-size:13px;
@@ -192,7 +179,6 @@ canvas{
     }
 
 }
-
 </style>
 
 </head>
@@ -205,7 +191,7 @@ canvas{
 <h1>📷 Passport Photo Maker</h1>
 
 <p>
-35 × 45 mm Passport Photo | 4 × 6 Inch Sheet
+35 × 45 mm | 4×6 & A4 | Computer Center Tool
 </p>
 
 </header>
@@ -231,8 +217,7 @@ JPG या PNG photo select करें
 <input
 type="file"
 id="photoInput"
-accept="image/jpeg,image/png"
->
+accept="image/jpeg,image/png">
 
 </div>
 
@@ -264,21 +249,17 @@ Photo Size
 <div class="control">
 
 <label>
-Background
+Paper Size
 </label>
 
-<select id="background">
+<select id="paper">
 
-<option value="original">
-Original
+<option value="4x6">
+4 × 6 Inch
 </option>
 
-<option value="white">
-White
-</option>
-
-<option value="blue">
-Blue
+<option value="a4">
+A4
 </option>
 
 </select>
@@ -322,13 +303,21 @@ Copies
 <div class="control">
 
 <label>
-Paper Size
+Background
 </label>
 
-<select id="paper">
+<select id="background">
 
-<option value="4x6">
-4 × 6 Inch
+<option value="original">
+Original
+</option>
+
+<option value="white">
+White
+</option>
+
+<option value="blue">
+Blue
 </option>
 
 </select>
@@ -357,26 +346,29 @@ Border OFF
 </div>
 
 
+<!-- =========================
+ZOOM
+========================= -->
+
 <div class="control">
 
 <label>
-Photo Vertical Position
+🔍 Photo Zoom
 </label>
 
 <input
 type="range"
-id="verticalPosition"
-min="-30"
-max="30"
-value="0"
-step="1"
->
+id="zoom"
+min="100"
+max="180"
+value="100"
+step="1">
 
-<div class="range-value">
+<div class="zoom-value">
 
-ऊपर / नीचे:
-<span id="positionValue">
-0
+Zoom:
+<span id="zoomValue">
+100%
 </span>
 
 </div>
@@ -391,13 +383,11 @@ step="1"
 BUTTONS
 ========================= -->
 
-<div class="buttons">
-
 <button
 class="create"
 onclick="createSheet()">
 
-✨ Create Passport Sheet
+✨ Create Sheet
 
 </button>
 
@@ -419,8 +409,6 @@ onclick="resetTool()">
 
 </button>
 
-</div>
-
 
 <div
 class="status"
@@ -431,11 +419,28 @@ id="status">
 </div>
 
 
+<div class="info">
+
+Passport Photo:
+<b>35 × 45 mm</b>
+
+<br>
+
+Paper:
+<b>4 × 6 Inch / A4</b>
+
+<br>
+
+Output:
+<b>300 DPI High Quality JPG</b>
+
+</div>
+
 </div>
 
 
 <!-- =========================
-PREVIEW AREA
+PREVIEW
 ========================= -->
 
 <div class="workspace">
@@ -451,8 +456,7 @@ PREVIEW AREA
 
 <img
 id="previewImage"
-style="display:none;"
->
+style="display:none;">
 
 <span id="emptyText">
 
@@ -462,19 +466,13 @@ Photo upload करने के बाद यहाँ दिखाई दे�
 
 </div>
 
-<div class="small-info">
-
-Original photo यहाँ दिखाई देगी।
-
-</div>
-
 </div>
 
 
 <div class="card">
 
 <h3>
-🖨️ 4 × 6 Inch Passport Sheet
+🖨️ Print Sheet Preview
 </h3>
 
 <div class="canvas-box">
@@ -487,19 +485,10 @@ height="1800">
 
 </div>
 
-<div class="small-info">
-
-Photo size: 35 × 45 mm |
-Paper: 4 × 6 inch |
-300 DPI
-
-</div>
-
 </div>
 
 
 </div>
-
 
 </div>
 
@@ -507,16 +496,16 @@ Paper: 4 × 6 inch |
 <script>
 
 
-/* ==================================
-GLOBAL PHOTO VARIABLE
-================================== */
+/* =====================================
+GLOBAL
+===================================== */
 
 let sourceImage = null;
 
 
-/* ==================================
-UPLOAD PHOTO
-================================== */
+/* =====================================
+PHOTO UPLOAD
+===================================== */
 
 document
 .getElementById("photoInput")
@@ -533,8 +522,6 @@ return;
 
 }
 
-
-/* Check image */
 
 if(!file.type.startsWith("image/")){
 
@@ -564,8 +551,6 @@ function(){
 sourceImage = img;
 
 
-/* Preview */
-
 const preview =
 document.getElementById(
 "previewImage"
@@ -591,24 +576,10 @@ document
 "status"
 )
 .innerText =
-"Photo upload हो गई है। अब Create Passport Sheet दबाएँ।";
+"Photo upload हो गई है।";
 
-
-/*
-Automatically create preview
-*/
 
 createSheet();
-
-};
-
-
-img.onerror =
-function(){
-
-alert(
-"Photo load नहीं हो सकी।"
-);
 
 };
 
@@ -624,29 +595,26 @@ reader.readAsDataURL(file);
 });
 
 
-/* ==================================
-VERTICAL POSITION SLIDER
-================================== */
+/* =====================================
+ZOOM
+===================================== */
 
 document
-.getElementById(
-"verticalPosition"
-)
+.getElementById("zoom")
 .addEventListener(
 "input",
 function(){
 
-document
-.getElementById(
-"positionValue"
-)
-.innerText =
+const value =
 this.value;
 
+document
+.getElementById(
+"zoomValue"
+)
+.innerText =
+value + "%";
 
-/*
-Update sheet live
-*/
 
 if(sourceImage){
 
@@ -657,10 +625,63 @@ createSheet();
 });
 
 
-/* ==================================
-GET EXACT CROP
-35 : 45 RATIO
-================================== */
+/* =====================================
+GET PAPER SIZE
+===================================== */
+
+function getPaperSize(){
+
+const paper =
+document
+.getElementById(
+"paper"
+)
+.value;
+
+
+/*
+4 × 6 inch
+300 DPI
+*/
+
+if(paper === "4x6"){
+
+return {
+
+width:1200,
+
+height:1800,
+
+name:"4×6"
+
+};
+
+}
+
+
+/*
+A4
+300 DPI
+*/
+
+return {
+
+width:2480,
+
+height:3508,
+
+name:"A4"
+
+};
+
+}
+
+
+/* =====================================
+GET CROP
+35 × 45 RATIO
+WITH ZOOM
+===================================== */
 
 function getCrop(){
 
@@ -679,8 +700,7 @@ sourceImage.naturalHeight;
 
 
 /*
-Target ratio
-35 / 45
+Passport ratio
 */
 
 const targetRatio =
@@ -691,111 +711,89 @@ const imageRatio =
 imageWidth / imageHeight;
 
 
-let cropWidth;
-let cropHeight;
-let cropX;
-let cropY;
+let baseWidth;
+let baseHeight;
 
 
 /*
---------------------------------
-LANDSCAPE / WIDE PHOTO
---------------------------------
+Wide photo
 */
 
 if(imageRatio > targetRatio){
 
-/*
-Height पूरी रखेंगे
-Width काटेंगे
-*/
-
-cropHeight =
+baseHeight =
 imageHeight;
 
-
-cropWidth =
+baseWidth =
 imageHeight *
 targetRatio;
 
-
-cropX =
-(imageWidth - cropWidth) / 2;
+}
 
 
 /*
-Vertical movement
+Long photo
 */
 
-cropY = 0;
+else{
+
+baseWidth =
+imageWidth;
+
+baseHeight =
+imageWidth /
+targetRatio;
 
 }
 
 
 /*
 --------------------------------
-PORTRAIT / LONG PHOTO
+ZOOM
 --------------------------------
 */
 
-else{
-
-/*
-Width पूरी रखेंगे
-Height काटेंगे
-*/
-
-cropWidth =
-imageWidth;
-
-
-cropHeight =
-imageWidth /
-targetRatio;
-
-
-cropX = 0;
-
-
-/*
-Center position
-*/
-
-const maxY =
-imageHeight - cropHeight;
-
-
-const slider =
+const zoom =
 parseInt(
 document
 .getElementById(
-"verticalPosition"
+"zoom"
 )
 .value
-);
+) / 100;
 
 
 /*
-Slider -30 to +30
-
-Center = 0
-Negative = ऊपर
-Positive = नीचे
+Zoom बढ़ने पर crop area छोटा होगा
 */
 
-const movement =
-maxY *
-(slider / 100);
+let cropWidth =
+baseWidth / zoom;
+
+let cropHeight =
+baseHeight / zoom;
 
 
-cropY =
-(maxY / 2) +
-movement;
+/*
+Crop center
+*/
+
+let cropX =
+(imageWidth - cropWidth) / 2;
+
+let cropY =
+(imageHeight - cropHeight) / 2;
 
 
 /*
 Safety
 */
+
+if(cropX < 0){
+
+cropX = 0;
+
+}
 
 if(cropY < 0){
 
@@ -803,18 +801,21 @@ cropY = 0;
 
 }
 
-if(cropY > maxY){
 
-cropY = maxY;
+if(cropWidth > imageWidth){
+
+cropWidth =
+imageWidth;
 
 }
 
+if(cropHeight > imageHeight){
+
+cropHeight =
+imageHeight;
+
 }
 
-
-/*
-Return crop data
-*/
 
 return {
 
@@ -831,9 +832,9 @@ height:cropHeight
 }
 
 
-/* ==================================
-DRAW PASSPORT PHOTO
-================================== */
+/* =====================================
+DRAW PHOTO
+===================================== */
 
 function drawPassportPhoto(
 ctx,
@@ -871,9 +872,7 @@ document
 
 
 /*
---------------------------------
-BACKGROUND
---------------------------------
+Background
 */
 
 if(background === "white"){
@@ -907,16 +906,12 @@ height
 
 
 /*
---------------------------------
-CLIP PHOTO
---------------------------------
+Clip
 */
 
 ctx.save();
 
-
 ctx.beginPath();
-
 
 ctx.rect(
 x,
@@ -925,18 +920,11 @@ width,
 height
 );
 
-
 ctx.clip();
 
 
 /*
---------------------------------
-ACTUAL CROPPING
---------------------------------
-
-Important:
-source image का सिर्फ crop area
-canvas में draw किया जाएगा।
+Draw cropped image
 */
 
 ctx.drawImage(
@@ -960,9 +948,7 @@ ctx.restore();
 
 
 /*
---------------------------------
-BORDER
---------------------------------
+Border
 */
 
 if(border === "yes"){
@@ -985,9 +971,9 @@ height
 }
 
 
-/* ==================================
-CREATE 4x6 SHEET
-================================== */
+/* =====================================
+CREATE SHEET
+===================================== */
 
 function createSheet(){
 
@@ -1002,6 +988,10 @@ return false;
 }
 
 
+const paper =
+getPaperSize();
+
+
 const canvas =
 document.getElementById(
 "sheetCanvas"
@@ -1012,27 +1002,15 @@ const ctx =
 canvas.getContext("2d");
 
 
-/*
---------------------------------
-4 × 6 INCH
-300 DPI
---------------------------------
-
-4 × 300 = 1200
-6 × 300 = 1800
-*/
-
 canvas.width =
-1200;
+paper.width;
 
 canvas.height =
-1800;
+paper.height;
 
 
 /*
---------------------------------
-WHITE PAPER
---------------------------------
+White paper
 */
 
 ctx.fillStyle =
@@ -1041,22 +1019,16 @@ ctx.fillStyle =
 ctx.fillRect(
 0,
 0,
-1200,
-1800
+paper.width,
+paper.height
 );
 
 
 /*
---------------------------------
-PASSPORT PHOTO SIZE
---------------------------------
+Passport photo size
+35 × 45 mm
 
-35mm × 45mm
-
-300 DPI calculation
-
-35mm = 413px
-45mm = 531px
+300 DPI
 */
 
 const photoWidth =
@@ -1067,9 +1039,7 @@ const photoHeight =
 
 
 /*
---------------------------------
-COPIES
---------------------------------
+Copies
 */
 
 const copies =
@@ -1083,9 +1053,7 @@ document
 
 
 /*
---------------------------------
-GAP
---------------------------------
+Gap
 */
 
 const gap =
@@ -1094,31 +1062,67 @@ const gap =
 
 /*
 --------------------------------
-COLUMNS
+AUTOMATIC GRID
 --------------------------------
+
+हम paper के ऊपर से
+photos arrange करेंगे।
 */
 
-let columns = 2;
+
+let columns;
 
 
-if(copies >= 6){
+/*
+4×6
+*/
+
+if(paper.name === "4×6"){
+
+if(copies <= 4){
+
+columns = 2;
+
+}
+
+else{
 
 columns = 3;
 
 }
 
+}
 
-if(copies >= 12){
+
+/*
+A4
+*/
+
+else{
+
+if(copies <= 4){
+
+columns = 3;
+
+}
+
+else if(copies <= 8){
 
 columns = 4;
 
 }
 
+else{
+
+columns = 5;
+
+}
+
+}
+
 
 /*
---------------------------------
-ROWS
---------------------------------
+Rows
 */
 
 const rows =
@@ -1128,9 +1132,7 @@ copies / columns
 
 
 /*
---------------------------------
-TOTAL LAYOUT
---------------------------------
+Total width
 */
 
 const totalWidth =
@@ -1139,30 +1141,42 @@ const totalWidth =
 ((columns - 1) * gap);
 
 
-const totalHeight =
-(rows * photoHeight)
-+
-((rows - 1) * gap);
+/*
+--------------------------------
+TOP ALIGNMENT
+--------------------------------
+
+अब photos बीच में vertically
+नहीं आएँगी।
+
+ऊपर से margin रहेगा।
+*/
+
+
+let topMargin = 60;
 
 
 /*
---------------------------------
-CENTER SHEET
---------------------------------
+Horizontal center
 */
 
 const startX =
-(1200 - totalWidth) / 2;
-
-
-const startY =
-(1800 - totalHeight) / 2;
+Math.max(
+20,
+(paper.width - totalWidth) / 2
+);
 
 
 /*
---------------------------------
-DRAW ALL PHOTOS
---------------------------------
+Top से शुरू
+*/
+
+const startY =
+topMargin;
+
+
+/*
+Draw photos
 */
 
 for(
@@ -1173,7 +1187,6 @@ i++
 
 const column =
 i % columns;
-
 
 const row =
 Math.floor(
@@ -1193,25 +1206,23 @@ row *
 (photoHeight + gap);
 
 
-/*
-Draw passport photo
-*/
-
 drawPassportPhoto(
+
 ctx,
+
 x,
 y,
+
 photoWidth,
 photoHeight
+
 );
 
 }
 
 
 /*
---------------------------------
-STATUS
---------------------------------
+Status
 */
 
 document
@@ -1219,9 +1230,12 @@ document
 "status"
 )
 .innerText =
+
 "✅ " +
 copies +
-" passport photos तैयार हैं | 35 × 45 mm | 4 × 6 inch";
+" photos तैयार हैं | " +
+paper.name +
+" | 35×45 mm | 300 DPI";
 
 
 return true;
@@ -1229,9 +1243,9 @@ return true;
 }
 
 
-/* ==================================
+/* =====================================
 DOWNLOAD JPG
-================================== */
+===================================== */
 
 function downloadJPG(){
 
@@ -1245,10 +1259,6 @@ return;
 
 }
 
-
-/*
-Create final sheet
-*/
 
 const success =
 createSheet();
@@ -1268,9 +1278,7 @@ document.getElementById(
 
 
 /*
---------------------------------
-CANVAS TO BLOB
---------------------------------
+Convert to JPG
 */
 
 canvas.toBlob(
@@ -1288,19 +1296,11 @@ return;
 }
 
 
-/*
-Create temporary URL
-*/
-
 const url =
 URL.createObjectURL(
 blob
 );
 
-
-/*
-Create download link
-*/
 
 const link =
 document.createElement(
@@ -1312,12 +1312,27 @@ link.href =
 url;
 
 
+const paper =
+document
+.getElementById(
+"paper"
+)
+.value;
+
+
+if(paper === "a4"){
+
+link.download =
+"passport-photo-A4.jpg";
+
+}
+
+else{
+
 link.download =
 "passport-photo-4x6.jpg";
 
-
-link.style.display =
-"none";
+}
 
 
 document
@@ -1327,16 +1342,8 @@ link
 );
 
 
-/*
-Start download
-*/
-
 link.click();
 
-
-/*
-Remove link
-*/
 
 document
 .body
@@ -1344,10 +1351,6 @@ document
 link
 );
 
-
-/*
-Release memory
-*/
 
 setTimeout(
 function(){
@@ -1361,16 +1364,12 @@ url
 );
 
 
-/*
-Status
-*/
-
 document
 .getElementById(
 "status"
 )
 .innerText =
-"✅ Passport sheet JPG download हो गई।";
+"✅ JPG successfully download हो गई।";
 
 
 },
@@ -1379,12 +1378,24 @@ document
 
 );
 
+
+/*
+Mobile/browser fallback message
+*/
+
+setTimeout(
+function(){
+
+},
+500
+);
+
 }
 
 
-/* ==================================
+/* =====================================
 RESET
-================================== */
+===================================== */
 
 function resetTool(){
 
@@ -1418,18 +1429,18 @@ document
 
 document
 .getElementById(
-"verticalPosition"
+"zoom"
 )
 .value =
-"0";
+"100";
 
 
 document
 .getElementById(
-"positionValue"
+"zoomValue"
 )
 .innerText =
-"0";
+"100%";
 
 
 const canvas =
@@ -1445,14 +1456,14 @@ canvas.getContext(
 
 
 ctx.fillStyle =
-"white";
+"#ffffff";
 
 
 ctx.fillRect(
 0,
 0,
-1200,
-1800
+canvas.width,
+canvas.height
 );
 
 
@@ -1466,7 +1477,6 @@ document
 }
 
 </script>
-
 
 </body>
 </html>
